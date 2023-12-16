@@ -3,6 +3,14 @@ import { MemoryRouter } from "react-router";
 import { createServer } from "../../test/server";
 import AuthButtons from "./AuthButtons";
 
+function renderComponent() {
+  return render(
+    <MemoryRouter>
+      <AuthButtons />
+    </MemoryRouter>
+  )
+}
+
 describe("when user is not signed in", () => {
   // createServer() ---> GET '/api/user' ---> {user:null}
   createServer([
@@ -13,9 +21,15 @@ describe("when user is not signed in", () => {
       },
     },
   ]);
-  test("when user is not sign in, sign in the sign up are visible", async () => {});
+  test("sign in the sign up are visible", async () => {
+    renderComponent();
+    await screen.findAllByRole('link');
+  });
 
-  test("test user is not signed in, sign out is not visible", async () => {});
+  test("sign out is not visible", async () => {
+    renderComponent();
+    await screen.findAllByRole('link');
+  });
 });
 
 describe("when user is signed in", () => {
@@ -28,7 +42,11 @@ describe("when user is signed in", () => {
       },
     },
   ]);
-  test("when user is signed in, sign in and sign up are not visible", async () => {});
+  test("sign in and sign up are not visible", async () => {
+    renderComponent();
+  });
 
-  test("when user is signed in, sign out is visible", async () => {});
+  test("sign out is visible", async () => {
+    renderComponent();
+  });
 });
